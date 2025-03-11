@@ -15,7 +15,7 @@
         }
         canvas {
             max-width: 600px;
-            margin: 0 auto;
+            margin: 20px auto;
         }
     </style>
 </head>
@@ -23,55 +23,51 @@
     <h1>Infrastructure Monitoring Dashboard</h1>
     <p>Real-time system metrics:</p>
     <canvas id="cpuChart" width="400" height="200"></canvas>
+    <canvas id="memoryChart" width="400" height="200"></canvas>
+    <canvas id="diskChart" width="400" height="200"></canvas>
 
     <script>
-        // Set up the chart
-        const ctx = document.getElementById('cpuChart').getContext('2d');
-        const cpuChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: [], // Time labels
-                datasets: [{
-                    label: 'CPU Usage (%)',
-                    data: [], // CPU values
-                    borderColor: 'blue',
-                    fill: false,
-                    tension: 0.1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 100 // CPU usage is a percentage
-                    }
-                }
-            }
-        });
+        // Chart setup
+        const charts = {
+            cpu: new Chart(document.getElementById('cpuChart').getContext('2d'), {
+                type: 'line',
+                data: { labels: [], datasets: [{ label: 'CPU Usage (%)', data: [], borderColor: 'blue', fill: false, tension: 0.1 }] },
+                options: { scales: { y: { beginAtZero: true, max: 100 } } }
+            }),
+            memory: new Chart(document.getElementById('memoryChart').getContext('2d'), {
+                type: 'line',
+                data: { labels: [], datasets: [{ label: 'Memory Usage (%)', data: [], borderColor: 'green', fill: false, tension: 0.1 }] },
+                options: { scales: { y: { beginAtZero: true, max: 100 } } }
+            }),
+            disk: new Chart(document.getElementById('diskChart').getContext('2d'), {
+                type: 'line',
+                data: { labels: [], datasets: [{ label: 'Disk Usage (%)', data: [], borderColor: 'red', fill: false, tension: 0.1 }] },
+                options: { scales: { y: { beginAtZero: true, max: 100 } } }
+            })
+        };
 
-        // Function to fetch and update chart data
-        function updateChart() {
+        // Function to update all charts
+        function updateCharts() {
             fetch('/metrics')
                 .then(response => response.json())
                 .then(data => {
                     const time = new Date().toLocaleTimeString();
-                    cpuChart.data.labels.push(time);
-                    cpuChart.data.datasets[0].data.push(data.cpu);
-
-                    // Keep only the last 10 data points
-                    if (cpuChart.data.labels.length > 10) {
-                        cpuChart.data.labels.shift();
-                        cpuChart.data.datasets[0].data.shift();
-                    }
-
-                    cpuChart.update();
+                    Object.keys(charts).forEach(metric => {
+                        charts[metric].data.labels.push(time);
+                        charts[metric].data.datasets[0].data.push(data[metric]);
+                        if (charts[metric].data.labels.length > 10) {
+                            charts[metric].data.labels.shift();
+                            charts[metric].data.datasets[0].data.shift();
+                        }
+                        charts[metric].update();
+                    });
                 })
                 .catch(error => console.error('Error fetching metrics:', error));
         }
 
-        // Update chart every 2 seconds
-        setInterval(updateChart, 2000);
-        updateChart(); // Initial call
+        // Update every 2 seconds
+        setInterval(updateCharts, 2000);
+        updateCharts(); // Initial call
     </script>
 </body>
 </html>
