@@ -11,12 +11,16 @@ A Python-based tool to visualize system metrics (CPU, memory, disk) in a web das
 
 ## Features
 - Real-time charts for CPU, memory, and disk usage, updating every 2 seconds.
+- Configurable host and port via CLI.
 
 ## Usage
 - Visit `/` for the dashboard homepage (HTML).
 - Fetch metrics at `/metrics` (returns JSON).
+- Run with custom settings: `python app.py --host 0.0.0.0 --port 8080`
+- See options: `python app.py --help`
 
 ## Status
 - [x] Project setup
 - [x] Collect system metrics (CPU, memory, disk)
 - [x] Display charts
+- [x] Add CLI options
