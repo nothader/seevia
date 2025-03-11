@@ -11,5 +11,5 @@ A Python-based tool to visualize system metrics (CPU, memory, disk) in a web das
 
 ## Status
 - [x] Project setup
-- [ ] Collect system metrics
+- [x] Collect system metrics
 - [ ] Display charts
