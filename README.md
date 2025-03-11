@@ -10,7 +10,7 @@ A Python-based tool to visualize system metrics (CPU, memory, disk) in a web das
 5. Run the app: `python app.py`
 
 ## Features
-- Real-time CPU usage chart updating every 2 seconds.
+- Real-time charts for CPU, memory, and disk usage, updating every 2 seconds.
 
 ## Usage
 - Visit `/` for the dashboard homepage (HTML).
@@ -18,5 +18,5 @@ A Python-based tool to visualize system metrics (CPU, memory, disk) in a web das
 
 ## Status
 - [x] Project setup
-- [x] Collect system metrics (CPU)
+- [x] Collect system metrics (CPU, memory, disk)
 - [x] Display charts
