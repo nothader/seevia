@@ -1,5 +1,5 @@
 # app.py
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 import psutil
 
 app = Flask(__name__)
@@ -10,7 +10,8 @@ def get_cpu_usage():
 
 @app.route('/')
 def home():
-    return "Infrastructure Monitoring Dashboard - Visit /metrics for data"
+    """Render the dashboard homepage."""
+    return render_template('index.html')
 
 @app.route('/metrics')
 def get_metrics():
