@@ -1,5 +1,5 @@
 # app.py
-from flask import Flask
+from flask import Flask, jsonify
 import psutil
 
 app = Flask(__name__)
@@ -10,19 +10,15 @@ def get_cpu_usage():
 
 @app.route('/')
 def home():
+    return "Infrastructure Monitoring Dashboard - Visit /metrics for data"
+
+@app.route('/metrics')
+def get_metrics():
+    """Return system metrics as JSON."""
     cpu = get_cpu_usage()
-    return f"Infrastructure Monitoring Dashboard - CPU Usage: {cpu}%"
+    data = {'cpu': cpu}
+    return jsonify(data)
 
 if __name__ == "__main__":
     print(f"Testing CPU usage: {get_cpu_usage()}%")
-    app.run(debug=True)# app.py
-from flask import Flask
-
-app = Flask(__name__)
-
-@app.route('/')
-def home():
-    return "Infrastructure Monitoring Dashboard - Coming Soon!"
-
-if __name__ == "__main__":
     app.run(debug=True)
